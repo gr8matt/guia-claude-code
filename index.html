@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Guía Claude Code · Dan Rivas</title>
+  <meta name="description" content="Una guía en español e inglés para empezar a construir apps con Claude Code.">
+  <meta name="theme-color" content="#2A2829">
+
+  <!-- Web app: instalable en el teléfono / installable on the phone -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Guía Claude">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>
+    // Aplica el idioma guardado antes de pintar la página (evita parpadeo)
+    (function () {
+      try { var l = localStorage.getItem('lang'); if (l === 'en' || l === 'es') document.documentElement.lang = l; } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+
+  <!-- ============ ENCABEZADO / HEADER ============ -->
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="Inicio">
+      <img src="assets/icon-192.png" alt="" width="34" height="34">
+      <span class="brand-text">
+        <strong>Guía Claude Code</strong>
+        <small><span class="es">para Dan</span><span class="en">for Dan</span></small>
+      </span>
+    </a>
+    <div class="topbar-actions">
+      <button class="lang-toggle" id="lang-toggle" type="button" aria-label="Cambiar idioma / Change language">
+        <span class="lang-opt" data-opt="es">ES</span><span class="lang-opt" data-opt="en">EN</span>
+      </button>
+      <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="toc">
+        <span class="es">Contenido</span><span class="en">Contents</span>
+      </button>
+    </div>
+    <nav class="toc" id="toc" aria-label="Contenido">
+      <ol>
+        <li><a href="#que-es"><span class="es">¿Qué es Claude Code?</span><span class="en">What is Claude Code?</span></a></li>
+        <li><a href="#instalar"><span class="es">Instalación en Mac</span><span class="en">Setup on Mac</span></a></li>
+        <li><a href="#pensar"><span class="es">Piensa antes de construir</span><span class="en">Think before you build</span></a></li>
+        <li><a href="#idioma"><span class="es">Idioma y el botón ES/EN</span><span class="en">Language &amp; the ES/EN button</span></a></li>
+        <li><a href="#web-app"><span class="es">Una app web: computadora y teléfono</span><span class="en">One web app: computer &amp; phone</span></a></li>
+        <li><a href="#muestrale"><span class="es">Muéstrale, no solo le digas</span><span class="en">Show it, don't just tell it</span></a></li>
+        <li><a href="#github"><span class="es">GitHub = puntos de guardado</span><span class="en">GitHub = save points</span></a></li>
+        <li><a href="#cuidado"><span class="es">Cuidado y privacidad</span><span class="en">Care &amp; privacy</span></a></li>
+        <li><a href="#camino"><span class="es">Tu camino</span><span class="en">Your path</span></a></li>
+        <li><a href="#referencia"><span class="es">Hoja de referencia</span><span class="en">Cheat sheet</span></a></li>
+      </ol>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="inicio">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="es">Hola, Dan 👋</span><span class="en">Hi, Dan 👋</span></p>
+          <h1>
+            <span class="es">Describe lo que imaginas.<br>Claude lo construye.</span>
+            <span class="en">Describe what you imagine.<br>Claude builds it.</span>
+          </h1>
+          <p class="lead">
+            <span class="es">No necesitas saber programar para empezar. Necesitas saber <em>lo que quieres</em> y explicarlo bien — en español, en inglés o hablando en voz alta. Esta guía te enseña cómo.</span>
+            <span class="en">You don't need to know how to code to start. You need to know <em>what you want</em> and explain it well — in Spanish, in English, or out loud. This guide shows you how.</span>
+          </p>
+          <div class="hero-cta">
+            <a class="btn btn-light" href="#que-es"><span class="es">Empieza aquí</span><span class="en">Start here</span> ↓</a>
+            <a class="btn btn-ghost" href="#pensar"><span class="es">Ir al creador de prompts</span><span class="en">Jump to the prompt builder</span></a>
+          </div>
+          <p class="hero-note">
+            <span class="es">👆 ¿Ves el botón <strong>ES / EN</strong> arriba? Pruébalo. Al final de esta guía sabrás pedirle a Claude uno igual para tus apps.</span>
+            <span class="en">👆 See the <strong>ES / EN</strong> button up top? Try it. By the end of this guide you'll know how to ask Claude for one just like it in your own apps.</span>
+          </p>
+        </div>
+
+        <div class="terminal" aria-label="Ejemplo de Claude Code">
+          <div class="terminal-bar"><i></i><i></i><i></i><span>~/proyectos/bienvenida — claude</span></div>
+          <div class="terminal-body" id="hero-terminal" aria-live="off"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 01 QUÉ ES ============ -->
+    <section class="section" id="que-es">
+      <div class="wrap">
+        <header class="section-head">
+          <span class="num">01</span>
+          <h2><span class="es">¿Qué es Claude Code?</span><span class="en">What is Claude Code?</span></h2>
+          <p class="section-lead">
+            <span class="es">Es un compañero de trabajo que vive en tu computadora. Tú le explicas lo que quieres; él escribe el código, crea los archivos, lo prueba y arregla los errores. Tú diriges.</span>
+            <span class="en">It's a coworker that lives on your computer. You explain what you want; it writes the code, creates the files, tests it and fixes mistakes. You're in charge.</span>
+          </p>
+        </header>
+
+        <div class="cards cards-4">
+          <article class="card">
+            <div class="card-icon">💬</div>
+            <h3><span class="es">Tú hablas</span><span class="en">You talk</span></h3>
+            <p><span class="es">Escribe (o dicta) como le hablarías a una persona. No hay comandos secretos.</span><span class="en">Type (or dictate) like you'd talk to a person. There are no secret commands.</span></p>
+          </article>
+          <article class="card">
+            <div class="card-icon">🛠️</div>
+            <h3><span class="es">Él construye</span><span class="en">It builds</span></h3>
+            <p><span class="es">Crea y edita archivos reales en una carpeta de tu Mac. Lo que hace, lo puedes ver y abrir.</span><span class="en">It creates and edits real files in a folder on your Mac. You can see and open everything it makes.</span></p>
+          </article>
+          <article class="card">
+            <div class="card-icon">✋</div>
+            <h3><span class="es">Te pide permiso</span><span class="en">It asks permission</span></h3>
+            <p><span class="es">Antes de cambiar algo importante, te pregunta. Puedes decir sí, no, o “hazlo diferente”.</span><span class="en">Before changing anything important, it asks. You can say yes, no, or “do it differently.”</span></p>
+          </article>
+          <article class="card">
+            <div class="card-icon">🎓</div>
+            <h3><span class="es">Te enseña</span><span class="en">It teaches</span></h3>
+            <p><span class="es">Pregúntale “¿qué hiciste y por qué?” cuando quieras. Así aprenderás muy rápido.</span><span class="en">Ask “what did you do and why?” anytime. That's how you'll learn fast.</span></p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <strong><span class="es">La idea clave:</span><span class="en">The key idea:</span></strong>
+          <span class="es">tu trabajo ya no es escribir código. Tu trabajo es <em>pensar con claridad</em> y <em>explicar bien</em> lo que quieres. Como pastor, ¡ya eres bueno en eso!</span>
+          <span class="en">your job is no longer writing code. Your job is to <em>think clearly</em> and <em>explain well</em> what you want. As a pastor, you're already good at that!</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 02 INSTALAR ============ -->
+    <section class="section alt" id="instalar">
+      <div class="wrap">
+        <header class="section-head">
+          <span class="num">02</span>
+          <h2><span class="es">Instalación en tu Mac</span><span class="en">Setting up on your Mac</span></h2>
+          <p class="section-lead">
+            <span class="es">Solo se hace una vez. Diez minutos y listo.</span>
+            <span class="en">You only do this once. Ten minutes and you're done.</span>
+          </p>
+        </header>
+
+        <ol class="steps">
+          <li>
+            <h3><span class="es">Abre la Terminal</span><span class="en">Open Terminal</span></h3>
+            <p><span class="es">Presiona <kbd>⌘ Cmd</kbd> + <kbd>Espacio</kbd>, escribe <strong>Terminal</strong> y presiona <kbd>Enter</kbd>. Es una ventana donde escribes instrucciones en texto. No muerde. 🙂</span><span class="en">Press <kbd>⌘ Cmd</kbd> + <kbd>Space</kbd>, type <strong>Terminal</strong> and press <kbd>Enter</kbd>. It's a window where you type instructions as text. It doesn't bite. 🙂</span></p>
+          </li>
+          <li>
+            <h3><span class="es">Instala Claude Code</span><span class="en">Install Claude Code</span></h3>
+            <p><span class="es">Copia esta línea, pégala en la Terminal y presiona <kbd>Enter</kbd>:</span><span class="en">Copy this line, paste it into Terminal and press <kbd>Enter</kbd>:</span></p>
+            <div class="code"><code>curl -fsSL https://claude.ai/install.sh | bash</code><button class="copy" type="button">Copiar</button></div>
+            <p class="small"><span class="es">Necesitas una cuenta de Claude (plan Pro o superior). Si algo sale diferente, revisa la <a href="https://docs.claude.com/en/docs/claude-code/setup" target="_blank" rel="noopener">guía oficial de instalación</a>.</span><span class="en">You'll need a Claude account (Pro plan or higher). If anything looks different, check the <a href="https://docs.claude.com/en/docs/claude-code/setup" target="_blank" rel="noopener">official setup guide</a>.</span></p>
+          </li>
+          <li>
+            <h3><span class="es">Crea una carpeta para tu proyecto y entra</span><span class="en">Create a folder for your project and go into it</span></h3>
+            <p><span class="es">Cada app vive en su propia carpeta. Esto crea una y abre Claude ahí:</span><span class="en">Each app lives in its own folder. This creates one and starts Claude there:</span></p>
+            <div class="code"><code>mkdir -p ~/proyectos/bienvenida && cd ~/proyectos/bienvenida && claude</code><button class="copy" type="button">Copiar</button></div>
+            <p class="small"><span class="es">La primera vez te pedirá iniciar sesión en el navegador. Sigue los pasos.</span><span class="en">The first time, it'll ask you to log in through your browser. Just follow along.</span></p>
+          </li>
+          <li>
+            <h3><span class="es">Activa el dictado en español 🎤</span><span class="en">Turn on Spanish dictation 🎤</span></h3>
+            <p><span class="es">Ve a <strong>Ajustes del Sistema → Teclado → Dictado</strong>, actívalo y elige <strong>Español</strong> (puedes agregar inglés también). Luego, en cualquier lugar — incluida la Terminal — presiona la tecla <kbd>🌐 / Fn</kbd> dos veces y habla.</span><span class="en">Go to <strong>System Settings → Keyboard → Dictation</strong>, turn it on and choose <strong>Spanish</strong> (you can add English too). Then anywhere — including Terminal — press the <kbd>🌐 / Fn</kbd> key twice and talk.</span></p>
+            <p class="small"><span class="es">Truco: piensa en voz alta. “Quiero una página para los visitantes nuevos… que tenga los horarios… y un mapa…” Claude entiende aunque no sea perfecto.</span><span class="en">Tip: think out loud. “I want a page for new visitors… with service times… and a map…” Claude understands even if it isn't perfect.</span></p>
+          </li>
+        </ol>
+
+        <div class="mini-grid">
+          <div class="mini">
+            <h4><span class="es">Teclas que vas a usar</span><span class="en">Keys you'll use</span></h4>
+            <ul class="keys">
+              <li><kbd>Esc</kbd> <span class="es">interrumpe a Claude si va por mal camino</span><span class="en">interrupts Claude if it's heading the wrong way</span></li>
+              <li><kbd>↑</kbd> <span class="es">repite lo último que escribiste</span><span class="en">brings back what you last typed</span></li>
+              <li><kbd>Shift</kbd>+<kbd>Tab</kbd> <span class="es">cambia de modo (incluido el modo plan)</span><span class="en">switches modes (including Plan Mode)</span></li>
+              <li><kbd>Ctrl</kbd>+<kbd>C</kbd> ×2 <span class="es">sale de Claude</span><span class="en">exits Claude</span></li>
+            </ul>
+          </div>
+          <div class="mini">
+            <h4><span class="es">¿Prefieres no usar la Terminal?</span><span class="en">Rather skip the Terminal?</span></h4>
+            <p><span class="es">Claude Code también funciona dentro de la app de escritorio de Claude y en editores como VS Code. Todo lo de esta guía aplica igual.</span><span class="en">Claude Code also works inside the Claude desktop app and in editors like VS Code. Everything in this guide applies the same way.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 03 PENSAR ============ -->
+    <section class="section" id="pensar">
+      <div class="wrap">
+        <header class="section-head">
+          <span class="num">03</span>
+          <h2><span class="es">Piensa antes de construir</span><span class="en">Think before you build</span></h2>
+          <p class="section-lead">
+            <span class="es">Este es el secreto más importante de toda la guía. Si escribes “hazme una app”, recibirás algo genérico. Si primero piensas en <em>para quién</em>, <em>para qué</em> y <em>qué es lo mínimo</em>, recibirás exactamente lo que imaginas.</span>
+            <span class="en">This is the most important secret in the whole guide. If you type “make me an app,” you'll get something generic. If you first think about <em>who it's for</em>, <em>what it's for</em> and <em>what the bare minimum is</em>, you'll get exactly what you imagine.</span>
+          </p>
+        </header>
+
+        <div class="cards cards-3 compact">
+          <article class="card"><h3>👥 <span class="es">¿Para quién?</span><span class="en">Who is it for?</span></h3><p><span class="es">Visitantes, voluntarios, jóvenes, el equipo pastoral… Cambia todo.</span><span class="en">Visitors, volunteers, youth, the pastoral team… It changes everything.</span></p></article>
+          <article class="card"><h3>🎯 <span class="es">¿Qué problema resuelve?</span><span class="en">What problem does it solve?</span></h3><p><span class="es">Una frase. “La gente no sabe cuándo es el próximo Servicio Hispano.”</span><span class="en">One sentence. “People don't know when the next Servicio Hispano is.”</span></p></article>
+          <article class="card"><h3>📱 <span class="es">¿Qué pantallas?</span><span class="en">What screens?</span></h3><p><span class="es">Haz una lista: inicio, detalles, formulario… Un dibujo en papel ayuda muchísimo.</span><span class="en">Make a list: home, details, a form… A sketch on paper helps a ton.</span></p></article>
+          <article class="card"><h3>🗂️ <span class="es">¿Qué información?</span><span class="en">What information?</span></h3><p><span class="es">Fechas, nombres, horarios… ¿De dónde viene? ¿Quién la cambia?</span><span class="en">Dates, names, schedules… Where does it come from? Who changes it?</span></p></article>
+          <article class="card"><h3>✂️ <span class="es">Versión 1 vs. después</span><span class="en">Version 1 vs. later</span></h3><p><span class="es">Empieza pequeño. Lo pequeño que funciona vale más que lo grande a medias.</span><span class="en">Start small. Something small that works beats something big that's half-done.</span></p></article>
+          <article class="card"><h3>🌎 <span class="es">¿Idioma y dispositivos?</span><span class="en">Language &amp; devices?</span></h3><p><span class="es">¿Español, inglés o ambos? ¿Teléfono, computadora o los dos?</span><span class="en">Spanish, English or both? Phone, computer or both?</span></p></article>
+        </div>
+
+        <!-- Prompt builder -->
+        <div class="builder" id="builder">
+          <div class="builder-head">
+            <div>
+              <h3><span class="es">🧰 Creador de prompts</span><span class="en">🧰 Prompt builder</span></h3>
+              <p><span class="es">Llena las casillas y esta página escribe tu primer mensaje para Claude. Cópialo y pégalo. (Pruébalo con un ejemplo primero.)</span><span class="en">Fill in the boxes and this page writes your first message to Claude. Copy and paste it. (Try an example first.)</span></p>
+            </div>
+            <div class="example-btns">
+              <span class="small muted"><span class="es">Ejemplos:</span><span class="en">Examples:</span></span>
+              <button type="button" class="chip" data-example="hispano">Servicio Hispano</button>
+              <button type="button" class="chip" data-example="voluntarios"><span class="es">Voluntarios</span><span class="en">Volunteers</span></button>
+              <button type="button" class="chip" data-example="oracion"><span class="es">Oración</span><span class="en">Prayer</span></button>
+              <button type="button" class="chip chip-clear" data-example="clear"><span class="es">Borrar</span><span class="en">Clear</span></button>
+            </div>
+          </div>
+
+          <div class="builder-grid">
+            <form class="builder-form" id="builder-form" autocomplete="off" onsubmit="return false">
+              <label><span class="lbl"><span class="es">Nombre de la app</span><span class="en">App name</span></span>
+                <input id="f-name" data-ph-es="Ej. Bienvenida LFC" data-ph-en="e.g. LFC Welcome"></label>
+              <label><span class="lbl"><span class="es">¿Para quién es?</span><span class="en">Who is it for?</span></span>
+                <input id="f-who" data-ph-es="Ej. Visitantes que vienen por primera vez" data-ph-en="e.g. First-time visitors"></label>
+              <label><span class="lbl"><span class="es">¿Qué problema resuelve?</span><span class="en">What problem does it solve?</span></span>
+                <textarea id="f-problem" rows="2" data-ph-es="Una o dos frases" data-ph-en="One or two sentences"></textarea></label>
+              <label><span class="lbl"><span class="es">Pantallas principales <em>(una por línea)</em></span><span class="en">Main screens <em>(one per line)</em></span></span>
+                <textarea id="f-screens" rows="3" data-ph-es="Inicio&#10;Detalles&#10;Formulario" data-ph-en="Home&#10;Details&#10;Form"></textarea></label>
+              <label><span class="lbl"><span class="es">¿Qué información muestra o guarda?</span><span class="en">What information does it show or store?</span></span>
+                <textarea id="f-data" rows="2" data-ph-es="Ej. Fechas, horarios, lugar" data-ph-en="e.g. Dates, times, location"></textarea></label>
+              <div class="two">
+                <label><span class="lbl"><span class="es">Versión 1 <em>(lo mínimo)</em></span><span class="en">Version 1 <em>(the minimum)</em></span></span>
+                  <textarea id="f-v1" rows="3" data-ph-es="Una cosa por línea" data-ph-en="One thing per line"></textarea></label>
+                <label><span class="lbl"><span class="es">Para más adelante</span><span class="en">For later</span></span>
+                  <textarea id="f-later" rows="3" data-ph-es="Ideas que pueden esperar" data-ph-en="Ideas that can wait"></textarea></label>
+              </div>
+
+              <fieldset>
+                <legend><span class="es">Idioma de la app</span><span class="en">App language</span></legend>
+                <div class="seg">
+                  <label><input type="radio" name="applang" value="es"><span>Español</span></label>
+                  <label><input type="radio" name="applang" value="en"><span>English</span></label>
+                  <label><input type="radio" name="applang" value="both" checked><span><span class="es">Ambos + botón ES/EN</span><span class="en">Both + ES/EN button</span></span></label>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend><span class="es">Dispositivos</span><span class="en">Devices</span></legend>
+                <label class="check"><input type="checkbox" id="f-responsive" checked> <span class="es">Teléfono y computadora</span><span class="en">Phone and computer</span></label>
+                <label class="check"><input type="checkbox" id="f-install" checked> <span class="es">Instalable en la pantalla de inicio del teléfono</span><span class="en">Installable on the phone's home screen</span></label>
+              </fieldset>
+              <fieldset>
+                <legend><span class="es">Escribir el prompt en</span><span class="en">Write the prompt in</span></legend>
+                <div class="seg">
+                  <label><input type="radio" name="promptlang" value="es" checked><span>Español</span></label>
+                  <label><input type="radio" name="promptlang" value="en"><span>English</span></label>
+                </div>
+              </fieldset>
+            </form>
+
+            <div class="builder-out">
+              <div class="out-head">
+                <span><span class="es">Tu prompt</span><span class="en">Your prompt</span></span>
+                <button class="copy copy-dark" type="button" data-target="prompt-out">Copiar</button>
+              </div>
+              <pre id="prompt-out" class="prompt-out"></pre>
+              <p class="small muted out-tip"><span class="es">Fíjate en las dos últimas líneas: le piden a Claude que <strong>pregunte primero</strong> y <strong>te muestre un plan</strong>. Esa costumbre te ahorrará horas.</span><span class="en">Notice the last two lines: they ask Claude to <strong>ask questions first</strong> and <strong>show you a plan</strong>. That habit will save you hours.</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cards cards-2">
+          <article class="card card-feature">
+            <h3>🗺️ <span class="es">Modo Plan</span><span class="en">Plan Mode</span></h3>
+            <p><span class="es">Presiona <kbd>Shift</kbd>+<kbd>Tab</kbd> hasta que veas <code>plan mode</code> abajo. En este modo Claude <strong>no toca ningún archivo</strong>: investiga, piensa y te presenta un plan. Tú lo lees, haces preguntas, pides cambios… y cuando estés de acuerdo, lo apruebas y empieza a construir.</span><span class="en">Press <kbd>Shift</kbd>+<kbd>Tab</kbd> until you see <code>plan mode</code> at the bottom. In this mode Claude <strong>doesn't touch any files</strong>: it researches, thinks and gives you a plan. You read it, ask questions, request changes… and when you agree, you approve it and it starts building.</span></p>
+            <p class="small muted"><span class="es">Úsalo siempre al empezar algo nuevo o grande.</span><span class="en">Use it every time you start something new or big.</span></p>
+          </article>
+          <article class="card card-feature">
+            <h3>📌 <span class="es">CLAUDE.md: tus reglas permanentes</span><span class="en">CLAUDE.md: your standing rules</span></h3>
+            <p><span class="es">Es un archivo de notas que Claude lee cada vez que abre tu proyecto. Escribe <code>/init</code> para crearlo, o pídele: “agrega esto a CLAUDE.md”. Por ejemplo:</span><span class="en">It's a notes file Claude reads every time it opens your project. Type <code>/init</code> to create it, or ask: “add this to CLAUDE.md.” For example:</span></p>
+<pre class="snippet es"># Sobre mí
+- Soy principiante. Explícame tus decisiones en palabras sencillas.
+- Háblame siempre en español.
+
+# Sobre este proyecto
+- Es para Lompoc Foursquare Church.
+- Toda la app en español e inglés, con botón ES/EN.
+- Debe funcionar bien en teléfono.</pre>
+<pre class="snippet en"># About me
+- I'm a beginner. Explain your decisions in simple words.
+- Always talk to me in Spanish.
+
+# About this project
+- It's for Lompoc Foursquare Church.
+- The whole app in Spanish and English, with an ES/EN button.
+- It must work well on phones.</pre>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 04 IDIOMA ============ -->
+    <section class="section alt" id="idioma">
+      <div class="wrap">
+        <header class="section-head">
+          <span class="num">04</span>
+          <h2><span class="es">Tu idioma, tus reglas</span><span class="en">Your language, your rules</span></h2>
+          <p class="section-lead">
+            <span class="es">Hay tres cosas distintas que conviene no confundir:</span>
+            <span class="en">There are three different things worth keeping separate:</span>
+          </p>
+        </header>
+
+        <div class="cards cards-3">
+          <article class="card">
+            <div class="card-icon">🗣️</div>
+            <h3><span class="es">1. Cómo le hablas a Claude</span><span class="en">1. How you talk to Claude</span></h3>
+            <p><span class="es">En español, escrito o dictado. Claude entiende perfectamente — y te responde en español. Puedes mezclar idiomas sin problema.</span><span class="en">In Spanish, typed or dictated. Claude understands perfectly — and answers in Spanish. You can mix languages, no problem.</span></p>
+          </article>
+          <article class="card">
+            <div class="card-icon">🖥️</div>
+            <h3><span class="es">2. En qué idioma está tu app</span><span class="en">2. What language your app is in</span></h3>
+            <p><span class="es">El que tú digas. Puedes hablarle en español y pedirle una app en inglés, o al revés. Solo díselo claramente.</span><span class="en">Whatever you say. You can talk in Spanish and ask for an app in English, or the other way around. Just say so clearly.</span></p>
+          </article>
+          <article class="card card-highlight">
+            <div class="card-icon">🔁</div>
+            <h3><span class="es">3. El botón ES/EN</span><span class="en">3. The ES/EN button</span></h3>
+            <p><span class="es">Para una iglesia con <strong>Servicio Hispano</strong> y servicios en inglés, esto es oro: una sola app que cada persona ve en su idioma.</span><span class="en">For a church with <strong>Servicio Hispano</strong> and English services, this is gold: one app that each person sees in their own language.</span></p>
+          </article>
+        </div>
+
+        <div class="split">
+          <div>
+            <h3 class="h-sm"><span class="es">⚠️ Pídelo desde el primer día</span><span class="en">⚠️ Ask for it on day one</span></h3>
+            <p><span class="es">Agregar el botón de idioma al principio es fácil. Agregarlo cuando la app ya está grande significa buscar cada palabra, en cada pantalla. Si crees que algún día la querrás bilingüe, pídelo en tu primer mensaje:</span><span class="en">Adding the language button at the start is easy. Adding it once the app is big means hunting down every word, on every screen. If you think you'll ever want it bilingual, ask in your very first message:</span></p>
+            <div class="code code-prompt"><code class="es">Hazla bilingüe (español e inglés) con un botón ES/EN visible arriba. Español por defecto. Que recuerde el idioma que eligió cada persona.</code><code class="en">Make it bilingual (Spanish and English) with a visible ES/EN button at the top. Spanish by default. It should remember the language each person chose.</code><button class="copy" type="button">Copiar</button></div>
+            <p class="small muted"><span class="es">Dato: el código por dentro (nombres de variables, etc.) normalmente está en inglés. Es normal y no importa — tú le hablas a Claude en español y él te explica todo en español.</span><span class="en">Note: the code itself (variable names, etc.) is usually in English. That's normal and doesn't matter — you talk to Claude in Spanish and it explains everything in Spanish.</span></p>
+          </div>
+
+          <!-- Mini demo app -->
+          <div class="demo-app" id="demo-app" data-demo-lang="es" aria-label="Demo">
+            <div class="demo-top">
+              <img src="assets/lfc-logo-white.png" alt="Lompoc Foursquare Church" class="demo-logo">
+              <button type="button" class="demo-toggle" id="demo-toggle"><span data-d="es">ES</span><span data-d="en">EN</span></button>
+            </div>
+            <div class="demo-body">
+              <p class="demo-kicker" data-dt-es="Próximo encuentro" data-dt-en="Next gathering"></p>
+              <h4 data-dt-es="Servicio Hispano" data-dt-en="Spanish Service (Servicio Hispano)"></h4>
+              <p class="demo-meta" data-dt-es="Viernes · 6:30 PM · Edificio Connections" data-dt-en="Friday · 6:30 PM · Connections Building"></p>
+              <p data-dt-es="Adoración, la Palabra y comunidad en español. ¡Trae a un amigo!" data-dt-en="Worship, the Word and community in Spanish. Bring a friend!"></p>
+              <div class="demo-btns">
+                <span class="demo-btn" data-dt-es="Invitar a un amigo" data-dt-en="Invite a friend"></span>
+                <span class="demo-btn ghost" data-dt-es="Cómo llegar" data-dt-en="Directions"></span>
+              </div>
+            </div>
+            <p class="demo-caption"><span class="es">↑ Una app de ejemplo. Toca su propio botón ES/EN.</span><span class="en">↑ A sample app. Tap its own ES/EN button.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 05 WEB APP ============ -->
+    <section class="section" id="web-app">
+      <div class="wrap">
+        <header class="section-head">
+          <span class="num">05</span>
+          <h2><span class="es">Una app web: computadora <em>y</em> teléfono</span><span class="en">One web app: computer <em>and</em> phone</span></h2>
+          <p class="section-lead">
+            <span class="es">Una <strong>app web</strong> es una página web que se comporta como una app. La construyes <strong>una sola vez</strong> y funciona en la computadora, en iPhone y en Android. Sin App Store, sin permisos especiales, y cuando la actualizas, todos ven el cambio al instante.</span>
+            <span class="en">A <strong>web app</strong> is a website that behaves like an app. You build it <strong>once</strong> and it works on a computer, on iPhone and on Android. No App Store, no special approvals, and when you update it, everyone sees the change instantly.</span>
+          </p>
+        </header>
+
+        <div class="devices" aria-hidden="true">
+          <div class="laptop">
+            <div class="screen">
+              <div class="mock-nav"></div>
+              <div class="mock-hero"></div>
+              <div class="mock-row"><i></i><i></i><i></i></div>
+            </div>
+            <div class="base"></div>
+          </div>
+          <div class="phone">
+            <div class="screen">
+              <div class="mock-nav"></div>
+              <div class="mock-hero"></div>
+              <div class="mock-col"><i></i><i></i><i></i></div>
+            </div>
+          </div>
+        </div>
+        <p class="center small muted"><span class="es">Mismo código. En pantalla grande, tres columnas; en el teléfono, una debajo de otra. A esto se le llama <strong>diseño responsivo</strong>.</span><span class="en">Same code. On a big screen, three columns; on a phone, one under the other. This is called <strong>responsive design</strong>.</span></p>
+
+        <div class="cards cards-3">
+          <article class="card">
+            <div class="card-icon">↔️</div>
+            <h3><span class="es">Pruébalo ahora</span><span class="en">Try it now</span></h3>
+            <p><span class="es">Si estás en la computadora, haz esta ventana más angosta. Mira cómo esta misma guía se reacomoda como en un teléfono.</span><span class="en">If you're on a computer, make this window narrower. Watch this very guide rearrange itself like it would on a phone.</span></p>
+          </article>
+          <article class="card">
+            <div class="card-icon">📲</div>
+            <h3><span class="es">Agrégala a tu iPhone</span><span class="en">Add it to your iPhone</span></h3>
+            <p><span class="es">Abre esta guía en Safari → toca <strong>Compartir</strong> <span aria-hidden="true">⬆️</span> → <strong>Agregar a pantalla de inicio</strong>. Ahora tiene su propio ícono y se abre como app. ¡Esta guía ya es una app web!</span><span class="en">Open this guide in Safari → tap <strong>Share</strong> <span aria-hidden="true">⬆️</span> → <strong>Add to Home Screen</strong>. Now it has its own icon and opens like an app. This guide is already a web app!</span></p>
+          </article>
+          <article class="card">
+            <div class="card-icon">🔍</div>
+            <h3><span class="es">Míralo en tu teléfono mientras construyes</span><span class="en">See it on your phone while you build</span></h3>
+            <p><span class="es">Pregúntale a Claude: “¿Cómo abro esto en mi teléfono?” Te dará una dirección para verla en tu Wi-Fi, o te ayudará a publicarla en GitHub (sección 07).</span><span class="en">Ask Claude: “How do I open this on my phone?” It'll give you an address to view it on your Wi-Fi, or help you publish it on GitHub (section 07).</span></p>
+          </article>
+        </div>
+
+        <div class="magic">
+          <p class="magic-label"><span class="es">✨ La frase mágica para tus prompts</span><span class="en">✨ The magic sentence for your prompts</span></p>
+          <div class="code code-prompt"><code class="es">Hazla una app web que funcione bien en teléfono y computadora, y que se pueda agregar a la pantalla de inicio del iPhone.</code><code class="en">Make it a web app that works well on phone and computer, and that can be added to the iPhone home screen.</code><button class="copy" type="button">Copiar</button></div>
+        </div>
+
+        <details class="faq">
+          <summary><span class="es">¿Y las apps “de verdad” de la App Store?</span><span class="en">What about “real” App Store apps?</span></summary>
+          <p><span class="es">También se pueden hacer con Claude, pero requieren más pasos (cuenta de desarrollador de Apple, revisión, etc.). Empieza con apps web: son más rápidas, gratis y ya funcionan en cualquier teléfono. Cuando una idea crezca mucho, ese será un buen siguiente paso.</span><span class="en">You can build those with Claude too, but they take more steps (an Apple developer account, review, etc.). Start with web apps: they're faster, free, and already work on any phone. When an idea really grows, that's a good next step.</span></p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ 06 MUÉSTRALE ============ -->
+    <section class="section alt" id="muestrale">
+      <div class="wrap">
+        <header class="section-head">
+          <span class="num">06</span>
+          <h2><span class="es">Muéstrale, no solo le digas</span><span class="en">Show it, don't just tell it</span></h2>
+          <p class="section-lead">
+            <span class="es">Claude puede <strong>ver</strong> imágenes y <strong>leer</strong> archivos. Una foto o una hoja de cálculo explica más que mil palabras — y así consigues que la app quede exactamente como la quieres.</span>
+            <span class="en">Claude can <strong>see</strong> images and <strong>read</strong> files. A photo or a spreadsheet explains more than a thousand words — and it's how you get the app exactly the way you want it.</span>
+          </p>
+        </header>
+
+        <div class="cards cards-4">
+          <article class="card">
+            <div class="card-icon">🖼️</div>
+            <h3><span class="es">Imágenes y capturas</span><span class="en">Images &amp; screenshots</span></h3>
+            <p><span class="es"><strong>Arrastra</strong> el archivo a la ventana de la Terminal, o cópialo y pégalo con <kbd>Ctrl</kbd>+<kbd>V</kbd>. “Haz que se vea como esta captura.”</span><span class="en"><strong>Drag</strong> the file into the Terminal window, or copy it and paste with <kbd>Ctrl</kbd>+<kbd>V</kbd>. “Make it look like this screenshot.”</span></p>
+          </article>
+          <article class="card">
+            <div class="card-icon">✏️</div>
+            <h3><span class="es">Un dibujo en papel</span><span class="en">A sketch on paper</span></h3>
+            <p><span class="es">Dibuja la pantalla en una servilleta, tómale foto con el iPhone, pásala por AirDrop y arrástrala. “Construye esta pantalla.” ¡Funciona!</span><span class="en">Draw the screen on a napkin, snap a photo with your iPhone, AirDrop it and drag it in. “Build this screen.” It works!</span></p>
+          </article>
+          <article class="card">
+            <div class="card-icon">📊</div>
+            <h3><span class="es">Hojas de cálculo</span><span class="en">Spreadsheets</span></h3>
+            <p><span class="es">Guarda el Excel o CSV en la carpeta del proyecto y menciónalo con <code>@</code>: “Usa <code>@voluntarios.csv</code> para crear el horario.”</span><span class="en">Save the Excel or CSV file in the project folder and mention it with <code>@</code>: “Use <code>@voluntarios.csv</code> to build the schedule.”</span></p>
+          </article>
+          <article class="card">
+            <div class="card-icon">🔗</div>
+            <h3><span class="es">Sitios web y PDFs</span><span class="en">Websites &amp; PDFs</span></h3>
+            <p><span class="es">Dale un enlace: “Basa el diseño en lompocfoursquare.com.” O un PDF con el boletín, el menú o las reglas del ministerio.</span><span class="en">Give it a link: “Base the design on lompocfoursquare.com.” Or a PDF with the bulletin, a menu or ministry guidelines.</span></p>
+          </article>
+        </div>
+
+        <div class="story">
+          <div class="story-copy">
+            <p class="eyebrow dark"><span class="es">Así se hizo esta página</span><span class="en">How this page was made</span></p>
+            <h3><span class="es">¿Notaste los colores, la letra y el logo?</span><span class="en">Notice the colors, the font and the logo?</span></h3>
+            <p><span class="es">Nadie los eligió a mano. Se le dio a Claude el sitio de la iglesia y se le dijo que basara el diseño en él. Claude leyó el sitio, encontró los colores exactos (<span class="swatch" style="--c:#2A2829"></span>carbón, <span class="swatch" style="--c:#E0E0DC"></span>gris cálido), la letra <strong>Poppins</strong> y el logo — y los usó aquí.</span><span class="en">Nobody picked them by hand. Claude was given the church's website and told to base the design on it. Claude read the site, found the exact colors (<span class="swatch" style="--c:#2A2829"></span>charcoal, <span class="swatch" style="--c:#E0E0DC"></span>warm gray), the <strong>Poppins</strong> font and the logo — and used them here.</span></p>
+            <p><span class="es">Tú puedes hacer lo mismo con cualquier sitio, gráfico o logo:</span><span class="en">You can do the same with any website, graphic or logo:</span></p>
+            <div class="code code-prompt"><code class="es">Basa los colores, la letra y el estilo en lompocfoursquare.com, y usa el logo que está en @logo.png.</code><code class="en">Base the colors, font and style on lompocfoursquare.com, and use the logo in @logo.png.</code><button class="copy" type="button">Copiar</button></div>
+          </div>
+          <div class="story-visual">
+            <img src="assets/lfc-logo-dark.png" alt="Lompoc Foursquare Church logo" loading="lazy">
+            <div class="palette">
+              <span style="background:#2A2829">#2A2829</span>
+              <span style="background:#878787">#878787</span>
+              <span style="background:#E0E0DC;color:#2A2829">#E0E0DC</span>
+              <span style="background:#FFFFFF;color:#2A2829">#FFFFFF</span>
+            </div>
+            <p class="font-sample">Poppins — Aa Bb Cc 123</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 07 GITHUB ============ -->
+    <section class="section" id="github">
+      <div class="wrap">
+        <header class="section-head">
+          <span class="num">07</span>
+          <h2><span class="es">GitHub = puntos de guardado</span><span class="en">GitHub = save points</span></h2>
+          <p class="section-lead">
+            <span class="es">¿Has jugado un videojuego donde guardas la partida antes del jefe final? Si pierdes, regresas a ese punto. <strong>Git</strong> hace eso con tu app, y <strong>GitHub</strong> guarda esos puntos en la nube. Así nunca tienes miedo de romper algo.</span>
+            <span class="en">Ever played a video game where you save before the final boss? If you lose, you go back to that point. <strong>Git</strong> does that for your app, and <strong>GitHub</strong> stores those save points in the cloud. So you're never afraid of breaking something.</span>
+          </p>
+        </header>
+
+        <div class="timeline" aria-label="Ejemplo de historial">
+          <div class="tl-item"><span class="dot"></span><div><strong><span class="es">Lunes</span><span class="en">Monday</span></strong><p><span class="es">Página de inicio con horarios</span><span class="en">Home page with service times</span></p></div></div>
+          <div class="tl-item"><span class="dot"></span><div><strong><span class="es">Martes</span><span class="en">Tuesday</span></strong><p><span class="es">Botón ES/EN</span><span class="en">ES/EN button</span></p></div></div>
+          <div class="tl-item"><span class="dot"></span><div><strong><span class="es">Miércoles</span><span class="en">Wednesday</span></strong><p><span class="es">Mapa y fotos</span><span class="en">Map and photos</span></p></div></div>
+          <div class="tl-item bad"><span class="dot"></span><div><strong><span class="es">Jueves 😬</span><span class="en">Thursday 😬</span></strong><p><span class="es">Algo se rompió…</span><span class="en">Something broke…</span></p></div></div>
+          <div class="tl-item back"><span class="dot"></span><div><strong>↩︎</strong><p><span class="es">“Regresa al miércoles”. Listo.</span><span class="en">“Go back to Wednesday.” Done.</span></p></div></div>
+        </div>
+
+        <div class="split">
+          <div>
+            <h3 class="h-sm"><span class="es">Palabras que vas a escuchar</span><span class="en">Words you'll hear</span></h3>
+            <dl class="vocab">
+              <dt>Repo <small>(repository)</small></dt><dd><span class="es">La carpeta de tu proyecto, con memoria de todo su historial.</span><span class="en">Your project folder, with a memory of its whole history.</span></dd>
+              <dt>Commit</dt><dd><span class="es">Un punto de guardado, con una nota que dice qué cambió.</span><span class="en">A save point, with a note saying what changed.</span></dd>
+              <dt>Push</dt><dd><span class="es">Subir tus puntos de guardado a GitHub (respaldo en la nube).</span><span class="en">Upload your save points to GitHub (cloud backup).</span></dd>
+              <dt>Branch <small><span class="es">(rama)</span><span class="en"></span></small></dt><dd><span class="es">Una copia para probar una idea sin afectar lo que ya funciona.</span><span class="en">A copy to try an idea without touching what already works.</span></dd>
+              <dt>GitHub Pages</dt><dd><span class="es">Publica tu app en internet gratis, directamente desde GitHub.</span><span class="en">Publishes your app on the internet for free, straight from GitHub.</span></dd>
+            </dl>
+          </div>
+          <div>
+            <h3 class="h-sm"><span class="es">No memorices comandos. Solo díselo:</span><span class="en">Don't memorize commands. Just say it:</span></h3>
+            <ul class="phrases">
+              <li><span class="es">“Guarda un punto de control con un buen mensaje.”</span><span class="en">“Save a checkpoint with a good message.”</span></li>
+              <li><span class="es">“Sube los cambios a GitHub.”</span><span class="en">“Push the changes to GitHub.”</span></li>
+              <li><span class="es">“¿Qué cambió desde ayer?”</span><span class="en">“What changed since yesterday?”</span></li>
+              <li><span class="es">“Algo se rompió. Regresa al último punto que funcionaba.”</span><span class="en">“Something broke. Go back to the last point that worked.”</span></li>
+              <li><span class="es">“Prueba esta idea en una rama aparte.”</span><span class="en">“Try this idea on a separate branch.”</span></li>
+              <li><span class="es">“Publica esto en GitHub Pages.”</span><span class="en">“Publish this on GitHub Pages.”</span></li>
+            </ul>
+            <p class="small"><span class="es"><strong>Primera vez:</strong> crea una cuenta gratis en <a href="https://github.com" target="_blank" rel="noopener">github.com</a> y dile a Claude: “Ayúdame a conectar este proyecto con mi cuenta de GitHub.” Te guiará paso a paso.</span><span class="en"><strong>First time:</strong> create a free account at <a href="https://github.com" target="_blank" rel="noopener">github.com</a> and tell Claude: “Help me connect this project to my GitHub account.” It'll walk you through it.</span></p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <span class="es">🔎 <strong>Esta guía vive en GitHub.</strong> Puedes ver cada punto de guardado de cómo se construyó en su <a href="https://github.com/gr8matt/guia-claude-code/commits/main" target="_blank" rel="noopener">historial de commits</a>.</span>
+          <span class="en">🔎 <strong>This guide lives on GitHub.</strong> You can see every save point of how it was built in its <a href="https://github.com/gr8matt/guia-claude-code/commits/main" target="_blank" rel="noopener">commit history</a>.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 08 CUIDADO ============ -->
+    <section class="section alt" id="cuidado">
+      <div class="wrap">
+        <header class="section-head">
+          <span class="num">08</span>
+          <h2><span class="es">Cuidado y privacidad</span><span class="en">Care &amp; privacy</span></h2>
+          <p class="section-lead">
+            <span class="es">Una iglesia maneja información delicada: pedidos de oración, datos de familias, niños y ofrendas. Unas reglas sencillas te protegen a ti y a tu congregación.</span>
+            <span class="en">A church handles sensitive information: prayer requests, family details, kids and giving. A few simple rules protect you and your congregation.</span>
+          </p>
+        </header>
+
+        <ul class="rules">
+          <li><span class="rule-ico">🙈</span><div><strong><span class="es">Usa datos inventados mientras construyes.</span><span class="en">Use made-up data while you build.</span></strong><p><span class="es">“Juan Pérez, 555-0100”. Nunca la lista real de miembros.</span><span class="en">“John Smith, 555-0100.” Never the real member list.</span></p></div></li>
+          <li><span class="rule-ico">🔒</span><div><strong><span class="es">Público vs. privado en GitHub.</span><span class="en">Public vs. private on GitHub.</span></strong><p><span class="es">Un repo <em>público</em> lo puede ver cualquiera. Nada personal ahí. Si dudas, hazlo <em>privado</em>.</span><span class="en">A <em>public</em> repo can be seen by anyone. Nothing personal goes there. When in doubt, make it <em>private</em>.</span></p></div></li>
+          <li><span class="rule-ico">🔑</span><div><strong><span class="es">Nunca contraseñas ni claves en el código.</span><span class="en">Never passwords or keys in the code.</span></strong><p><span class="es">Si una app necesita una clave, pregúntale a Claude cómo guardarla de forma segura.</span><span class="en">If an app needs a key, ask Claude how to store it safely.</span></p></div></li>
+          <li><span class="rule-ico">🧒</span><div><strong><span class="es">Niños, oración y ofrendas = cuidado extra.</span><span class="en">Kids, prayer and giving = extra care.</span></strong><p><span class="es">Antes de publicar algo así, consulta con el equipo de la iglesia y pregúntale a Claude: “¿Qué riesgos de privacidad tiene esto?”</span><span class="en">Before publishing anything like that, check with the church team and ask Claude: “What privacy risks does this have?”</span></p></div></li>
+          <li><span class="rule-ico">👀</span><div><strong><span class="es">Lee antes de aprobar.</span><span class="en">Read before you approve.</span></strong><p><span class="es">Cuando Claude te pida permiso, lee qué va a hacer. Si no entiendes, pregunta: “¿Qué hace esto?”</span><span class="en">When Claude asks permission, read what it's about to do. If you don't understand, ask: “What does this do?”</span></p></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 09 CAMINO ============ -->
+    <section class="section" id="camino">
+      <div class="wrap">
+        <header class="section-head">
+          <span class="num">09</span>
+          <h2><span class="es">Tu camino</span><span class="en">Your path</span></h2>
+          <p class="section-lead">
+            <span class="es">Cada proyecto te enseña algo nuevo. Empieza por el primero; vas a crecer más rápido de lo que crees.</span>
+            <span class="en">Each project teaches you something new. Start with the first one; you'll grow faster than you think.</span>
+          </p>
+        </header>
+
+        <ol class="ladder">
+          <li>
+            <div class="rung-tag"><span class="es">Día 1</span><span class="en">Day 1</span></div>
+            <div class="rung">
+              <h3><span class="es">Página de bienvenida para visitantes</span><span class="en">Welcome page for visitors</span></h3>
+              <p class="learn"><span class="es">Aprendes: hablar con Claude, ver tu página en el navegador.</span><span class="en">You learn: talking to Claude, seeing your page in the browser.</span></p>
+              <div class="code code-prompt"><code class="es">Crea una página de bienvenida para visitantes nuevos de Lompoc Foursquare Church. Horarios de los domingos: 8:30, 10:00 y 11:30. Dirección: 125 N. C St., Lompoc. Bilingüe con botón ES/EN. Basa el estilo en lompocfoursquare.com.</code><code class="en">Create a welcome page for new visitors to Lompoc Foursquare Church. Sunday service times: 8:30, 10:00 and 11:30. Address: 125 N. C St., Lompoc. Bilingual with an ES/EN button. Base the style on lompocfoursquare.com.</code><button class="copy" type="button">Copiar</button></div>
+            </div>
+          </li>
+          <li>
+            <div class="rung-tag"><span class="es">Semana 1</span><span class="en">Week 1</span></div>
+            <div class="rung">
+              <h3><span class="es">Horario de voluntarios desde una hoja de cálculo</span><span class="en">Volunteer schedule from a spreadsheet</span></h3>
+              <p class="learn"><span class="es">Aprendes: darle archivos a Claude, búsquedas y filtros.</span><span class="en">You learn: giving Claude files, search and filters.</span></p>
+              <div class="code code-prompt"><code class="es">Usa @voluntarios.csv para crear una página donde cada voluntario busque su nombre y vea cuándo le toca servir. Que funcione bien en el teléfono.</code><code class="en">Use @voluntarios.csv to build a page where each volunteer searches for their name and sees when they're serving. It should work well on phones.</code><button class="copy" type="button">Copiar</button></div>
+            </div>
+          </li>
+          <li>
+            <div class="rung-tag"><span class="es">Semanas 2–3</span><span class="en">Weeks 2–3</span></div>
+            <div class="rung">
+              <h3><span class="es">App del Servicio Hispano</span><span class="en">Servicio Hispano app</span></h3>
+              <p class="learn"><span class="es">Aprendes: apps instalables, compartir, publicar con GitHub Pages.</span><span class="en">You learn: installable apps, sharing, publishing with GitHub Pages.</span></p>
+              <div class="code code-prompt"><code class="es">Crea una app web para el Servicio Hispano: próximas fechas, detalles de cada servicio, botón para invitar a un amigo por WhatsApp y botón ES/EN. Que se pueda agregar a la pantalla de inicio. Luego ayúdame a publicarla en GitHub Pages.</code><code class="en">Create a web app for Servicio Hispano: upcoming dates, details for each service, a button to invite a friend via WhatsApp, and an ES/EN button. It should be installable to the home screen. Then help me publish it on GitHub Pages.</code><button class="copy" type="button">Copiar</button></div>
+            </div>
+          </li>
+          <li>
+            <div class="rung-tag"><span class="es">Mes 1+</span><span class="en">Month 1+</span></div>
+            <div class="rung">
+              <h3><span class="es">Muro de oración o inscripción a eventos</span><span class="en">Prayer wall or event sign-ups</span></h3>
+              <p class="learn"><span class="es">Aprendes: bases de datos, inicio de sesión, quién puede ver qué.</span><span class="en">You learn: databases, logins, who can see what.</span></p>
+              <div class="code code-prompt"><code class="es">Quiero un muro de oración: los miembros envían pedidos, el equipo pastoral los revisa antes de que se vean, y algunos pueden ser privados. Antes de construir, explícame las opciones para guardar los datos de forma segura y muéstrame un plan.</code><code class="en">I want a prayer wall: members submit requests, the pastoral team reviews them before they're shown, and some can be private. Before building, explain my options for storing the data safely and show me a plan.</code><button class="copy" type="button">Copiar</button></div>
+            </div>
+          </li>
+        </ol>
+
+        <p class="center more-ideas"><span class="es">Más ideas: plan de lectura bíblica para los jóvenes · boletín semanal imprimible · buscador de grupos pequeños · inscripción para Misiones a México · registro para el bautismo.</span><span class="en">More ideas: a Bible reading plan tracker for the youth · a printable weekly bulletin · a small-group finder · Mexico Missions sign-ups · water baptism registration.</span></p>
+      </div>
+    </section>
+
+    <!-- ============ 10 REFERENCIA ============ -->
+    <section class="section alt" id="referencia">
+      <div class="wrap">
+        <header class="section-head">
+          <span class="num">10</span>
+          <h2><span class="es">Hoja de referencia</span><span class="en">Cheat sheet</span></h2>
+          <p class="section-lead">
+            <span class="es">Guarda esta sección. Vas a volver a ella.</span>
+            <span class="en">Bookmark this section. You'll come back to it.</span>
+          </p>
+        </header>
+
+        <div class="ref-grid">
+          <div class="ref-card">
+            <h3><span class="es">Frases que funcionan</span><span class="en">Phrases that work</span></h3>
+            <ul class="phrase-list">
+              <li><span class="es">Explícame lo que hiciste, en palabras sencillas.</span><span class="en">Explain what you did, in simple words.</span></li>
+              <li><span class="es">No entiendo. Explícamelo más simple.</span><span class="en">I don't understand. Explain it more simply.</span></li>
+              <li><span class="es">Antes de hacer nada, muéstrame un plan.</span><span class="en">Before doing anything, show me a plan.</span></li>
+              <li><span class="es">Hazme las preguntas que necesites primero.</span><span class="en">Ask me whatever questions you need first.</span></li>
+              <li><span class="es">Ábrelo en el navegador para que lo vea.</span><span class="en">Open it in the browser so I can see it.</span></li>
+              <li><span class="es">Esto no se ve bien en el teléfono. Arréglalo.</span><span class="en">This doesn't look right on the phone. Fix it.</span></li>
+              <li><span class="es">Haz que se parezca a esta imagen: (arrastra la imagen)</span><span class="en">Make it look like this image: (drag the image in)</span></li>
+              <li><span class="es">Hay un error: (pega el mensaje). ¿Qué significa?</span><span class="en">There's an error: (paste the message). What does it mean?</span></li>
+              <li><span class="es">Guarda un punto de control y súbelo a GitHub.</span><span class="en">Save a checkpoint and push it to GitHub.</span></li>
+              <li><span class="es">¿Qué debería construir después para aprender más?</span><span class="en">What should I build next to learn more?</span></li>
+            </ul>
+          </div>
+
+          <div class="ref-card">
+            <h3><span class="es">Atajos dentro de Claude Code</span><span class="en">Shortcuts inside Claude Code</span></h3>
+            <table class="ref-table">
+              <tr><td><kbd>Shift</kbd>+<kbd>Tab</kbd></td><td><span class="es">Cambiar de modo (modo plan)</span><span class="en">Switch modes (Plan Mode)</span></td></tr>
+              <tr><td><kbd>Esc</kbd></td><td><span class="es">Detener a Claude</span><span class="en">Stop Claude</span></td></tr>
+              <tr><td><kbd>Esc</kbd> <kbd>Esc</kbd></td><td><span class="es">Volver a un mensaje anterior</span><span class="en">Go back to an earlier message</span></td></tr>
+              <tr><td><code>@archivo</code></td><td><span class="es">Mencionar un archivo</span><span class="en">Mention a file</span></td></tr>
+              <tr><td><kbd>Ctrl</kbd>+<kbd>V</kbd></td><td><span class="es">Pegar una imagen</span><span class="en">Paste an image</span></td></tr>
+              <tr><td><code>/init</code></td><td><span class="es">Crear CLAUDE.md</span><span class="en">Create CLAUDE.md</span></td></tr>
+              <tr><td><code>/clear</code></td><td><span class="es">Empezar una conversación nueva</span><span class="en">Start a fresh conversation</span></td></tr>
+              <tr><td><code>/help</code></td><td><span class="es">Ver todos los comandos</span><span class="en">See all commands</span></td></tr>
+              <tr><td><kbd>🌐</kbd> ×2</td><td><span class="es">Dictado del Mac</span><span class="en">Mac dictation</span></td></tr>
+            </table>
+          </div>
+
+          <div class="ref-card wide">
+            <h3><span class="es">Glosario</span><span class="en">Glossary</span></h3>
+            <dl class="glossary">
+              <dt>Prompt</dt><dd><span class="es">Lo que le escribes a Claude. Tu pedido.</span><span class="en">What you write to Claude. Your request.</span></dd>
+              <dt>Frontend</dt><dd><span class="es">Lo que la gente ve y toca: pantallas y botones.</span><span class="en">What people see and touch: screens and buttons.</span></dd>
+              <dt>Backend</dt><dd><span class="es">Lo que pasa “detrás”: guardar datos, enviar correos.</span><span class="en">What happens “behind”: saving data, sending emails.</span></dd>
+              <dt>HTML / CSS / JavaScript</dt><dd><span class="es">Los tres idiomas de la web: estructura, diseño y comportamiento.</span><span class="en">The three languages of the web: structure, style and behavior.</span></dd>
+              <dt><span class="es">Base de datos</span><span class="en">Database</span></dt><dd><span class="es">Donde una app guarda información para después.</span><span class="en">Where an app stores information for later.</span></dd>
+              <dt>Deploy</dt><dd><span class="es">Publicar tu app en internet para que otros la usen.</span><span class="en">Putting your app on the internet for others to use.</span></dd>
+              <dt>Responsive</dt><dd><span class="es">Que se adapta a pantallas grandes y pequeñas.</span><span class="en">Adapts to big and small screens.</span></dd>
+              <dt>PWA</dt><dd><span class="es">App web que se instala en la pantalla de inicio.</span><span class="en">A web app you can install on the home screen.</span></dd>
+              <dt>Localhost</dt><dd><span class="es">Tu app corriendo solo en tu computadora, para probar.</span><span class="en">Your app running only on your computer, for testing.</span></dd>
+              <dt>Bug</dt><dd><span class="es">Un error. Normal. Claude te ayuda a arreglarlo.</span><span class="en">A mistake. Normal. Claude helps you fix it.</span></dd>
+              <dt>i18n</dt><dd><span class="es">Abreviatura en inglés de “hacer una app multilingüe”.</span><span class="en">Shorthand for “making an app multilingual.”</span></dd>
+              <dt>Terminal</dt><dd><span class="es">La ventana donde escribes instrucciones de texto.</span><span class="en">The window where you type text instructions.</span></dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CIERRE ============ -->
+    <section class="closing">
+      <div class="wrap center">
+        <img src="assets/lfc-logo-white.png" alt="Lompoc Foursquare Church" class="closing-logo" loading="lazy">
+        <h2><span class="es">¿Qué vas a construir primero?</span><span class="en">What will you build first?</span></h2>
+        <p><span class="es">Abre la Terminal, escribe <code>claude</code> y cuéntale tu idea. Lo peor que puede pasar es que aprendas algo.</span><span class="en">Open Terminal, type <code>claude</code> and tell it your idea. The worst that can happen is you learn something.</span></p>
+        <a class="btn btn-light" href="#pensar"><span class="es">Ir al creador de prompts</span><span class="en">Go to the prompt builder</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p><span class="es">Hecho con Claude Code, para Dan Rivas · Inspirado en</span><span class="en">Made with Claude Code, for Dan Rivas · Inspired by</span> <a href="https://lompocfoursquare.com" target="_blank" rel="noopener">Lompoc Foursquare Church</a></p>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="js/app.js"></script>
+</body>
+</html>
